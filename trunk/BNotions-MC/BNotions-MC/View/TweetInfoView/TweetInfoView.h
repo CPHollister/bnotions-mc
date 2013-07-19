@@ -18,6 +18,8 @@
     UILabel *userName;
     
     UILabel *tweet;
+    
+    UILabel *timeSinceTweet;
 }
 
 @property (nonatomic, assign) NSDictionary *tweetData;

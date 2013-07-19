@@ -17,19 +17,6 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "BNotions-MC/ViewController/ShellViewController.m"
-         timestampString = "395779733.465268"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "32"
-         endingLineNumber = "32"
-         landmarkName = "-loadView"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
@@ -112,25 +99,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BNotions-MC/View/MapView.m"
-         timestampString = "395935638.724501"
+         timestampString = "395945427.387499"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "147"
-         endingLineNumber = "147"
+         startingLineNumber = "151"
+         endingLineNumber = "151"
          landmarkName = "-mapView:viewForAnnotation:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "BNotions-MC/View/MapView.m"
-         timestampString = "395935638.724501"
+         timestampString = "395946362.502842"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "100"
-         endingLineNumber = "100"
-         landmarkName = "-populateMap:"
+         startingLineNumber = "263"
+         endingLineNumber = "263"
+         landmarkName = "-onErrorGettingResults"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

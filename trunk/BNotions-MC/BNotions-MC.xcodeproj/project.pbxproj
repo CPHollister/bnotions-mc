@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2731DE5E1798D61500D35CF0 /* SearchBar.png in Resources */ = {isa = PBXBuildFile; fileRef = 2731DE5D1798D61500D35CF0 /* SearchBar.png */; };
 		2731DE601798E72900D35CF0 /* TweetPinSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2731DE5F1798E72900D35CF0 /* TweetPinSelected.png */; };
+		2731DE641799B2FE00D35CF0 /* TweetTimePassed.m in Sources */ = {isa = PBXBuildFile; fileRef = 2731DE631799B2FE00D35CF0 /* TweetTimePassed.m */; };
+		2731DE661799B5B900D35CF0 /* TweetPinHot.png in Resources */ = {isa = PBXBuildFile; fileRef = 2731DE651799B5B900D35CF0 /* TweetPinHot.png */; };
+		2731DE681799B79000D35CF0 /* TweetPinHotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = 2731DE671799B79000D35CF0 /* TweetPinHotSelected.png */; };
 		2764A0FE179735D00023DB59 /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 2764A0FD179735D00023DB59 /* MapAnnotation.m */; };
 		279A980C1794B6AB004A019F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279A980B1794B6AB004A019F /* UIKit.framework */; };
 		279A980E1794B6AB004A019F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279A980D1794B6AB004A019F /* Foundation.framework */; };
@@ -45,6 +48,10 @@
 /* Begin PBXFileReference section */
 		2731DE5D1798D61500D35CF0 /* SearchBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = SearchBar.png; path = "BNotions-MC/Assets/SearchBar.png"; sourceTree = SOURCE_ROOT; };
 		2731DE5F1798E72900D35CF0 /* TweetPinSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TweetPinSelected.png; sourceTree = "<group>"; };
+		2731DE621799B2FE00D35CF0 /* TweetTimePassed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetTimePassed.h; sourceTree = "<group>"; };
+		2731DE631799B2FE00D35CF0 /* TweetTimePassed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetTimePassed.m; sourceTree = "<group>"; };
+		2731DE651799B5B900D35CF0 /* TweetPinHot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TweetPinHot.png; sourceTree = "<group>"; };
+		2731DE671799B79000D35CF0 /* TweetPinHotSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TweetPinHotSelected.png; sourceTree = "<group>"; };
 		2764A0FC179735D00023DB59 /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
 		2764A0FD179735D00023DB59 /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
 		279A98081794B6AB004A019F /* BNotions-MC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BNotions-MC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -118,6 +125,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2731DE611799B2CB00D35CF0 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				2731DE621799B2FE00D35CF0 /* TweetTimePassed.h */,
+				2731DE631799B2FE00D35CF0 /* TweetTimePassed.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		2764A0FB179735B60023DB59 /* MapView */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +180,7 @@
 		279A98111794B6AB004A019F /* BNotions-MC */ = {
 			isa = PBXGroup;
 			children = (
+				2731DE611799B2CB00D35CF0 /* Util */,
 				279A981A1794B6AB004A019F /* AppDelegate.h */,
 				279A981B1794B6AB004A019F /* AppDelegate.m */,
 				279A98291794BEF4004A019F /* Assets */,
@@ -197,6 +214,8 @@
 				27A259201798C1B700FD1D16 /* Fonts */,
 				2731DE5D1798D61500D35CF0 /* SearchBar.png */,
 				27A259111798BA9400FD1D16 /* TweetPin.png */,
+				2731DE651799B5B900D35CF0 /* TweetPinHot.png */,
+				2731DE671799B79000D35CF0 /* TweetPinHotSelected.png */,
 				2731DE5F1798E72900D35CF0 /* TweetPinSelected.png */,
 			);
 			path = Assets;
@@ -374,6 +393,8 @@
 				27A259221798C24B00FD1D16 /* HelveticaNeue.dfont in Resources */,
 				2731DE5E1798D61500D35CF0 /* SearchBar.png in Resources */,
 				2731DE601798E72900D35CF0 /* TweetPinSelected.png in Resources */,
+				2731DE661799B5B900D35CF0 /* TweetPinHot.png in Resources */,
+				2731DE681799B79000D35CF0 /* TweetPinHotSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,6 +423,7 @@
 				27A259161798BAD800FD1D16 /* MapAnnotationView.m in Sources */,
 				27A2591B1798C13C00FD1D16 /* TweetInfoView.m in Sources */,
 				27A2591F1798C19200FD1D16 /* SearchView.m in Sources */,
+				2731DE641799B2FE00D35CF0 /* TweetTimePassed.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

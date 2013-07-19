@@ -8,6 +8,8 @@
 
 #import <MapKit/MapKit.h>
 
-@interface MapAnnotationView : MKAnnotationView
+@interface MapAnnotationView : MKAnnotationView {
+    BOOL isHot;
+}
 
 @end

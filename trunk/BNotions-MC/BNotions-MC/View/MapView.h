@@ -14,9 +14,10 @@
 @protocol MapViewDelegate <NSObject>
 @required
 - (void)mapAnnotationViewSelected:(NSDictionary *)data;
+- (void)mapAnnotationViewDeselected;
 @end
 
-@interface MapView : UIView <MKMapViewDelegate, CLLocationManagerDelegate>
+@interface MapView : UIView <MKMapViewDelegate, CLLocationManagerDelegate, UIAlertViewDelegate>
 {
     MKMapView *map;
     
@@ -24,6 +25,7 @@
     
     NSString *_searchValue;
     
+    NSMutableDictionary *dataToMap;
     NSMutableDictionary *mappedData;
 }
 

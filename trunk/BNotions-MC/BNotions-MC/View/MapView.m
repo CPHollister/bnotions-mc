@@ -19,15 +19,19 @@
 
 - (void) setSearchValue:(NSString *)searchValue
 {
-    [_searchValue release];
-    _searchValue = nil;
-    
-    _searchValue = [searchValue retain];
-    
-    [mappedData release];
-    mappedData = nil;
-    
-    [self searchTwitter];
+    if ( ![searchValue isEqualToString:_searchValue] ) {
+        [_searchValue release];
+        _searchValue = nil;
+        
+        _searchValue = [searchValue retain];
+        
+        [mappedData release];
+        mappedData = nil;
+        
+        [self clearAnnotations];
+        
+        [self searchTwitter];
+    }
 }
 
 - (NSString *)searchValue
@@ -75,11 +79,11 @@
 {
     NSArray *mapData = [data retain];
     
-    [self clearAnnotations];
-    
     if ( mappedData == nil ) {
         mappedData = [[NSMutableDictionary alloc] init];
     }
+    
+    dataToMap = [NSMutableDictionary dictionary];
     
     for( int i = 0; i < [mapData count]; i++ )
     {
@@ -89,19 +93,20 @@
         
         id tweetCoordinates = (id)[tweet objectForKey:@"coordinates"];
         
-        if( [tweetCoordinates isKindOfClass:[NSDictionary class]] ) {
-            [mappedData setObject:tweet forKey:[tweetId stringValue]];
+        if( [tweetCoordinates isKindOfClass:[NSDictionary class]] && ![mappedData objectForKey:[tweetId stringValue]]) {
+            [dataToMap setObject:tweet forKey:[tweetId stringValue]];
         }
     }
     
     [mapData release];
     mapData = nil;
     
-    for( int i = 0; i < [[mappedData allKeys] count]; i++ )
+    for( int i = 0; i < [[dataToMap allKeys] count]; i++ )
     {
-        NSString *key = [[mappedData allKeys] objectAtIndex:i];
-        NSDictionary *tweet = (NSDictionary *)[mappedData valueForKey:key];
+        NSString *key = [[dataToMap allKeys] objectAtIndex:i];
+        NSDictionary *tweet = (NSDictionary *)[dataToMap valueForKey:key];
         
+        id tweetId = (id)[tweet objectForKey:@"id"];
         id tweetCoordinates = (id)[tweet objectForKey:@"coordinates"];
         NSArray *coordinateArray = [tweetCoordinates objectForKey:@"coordinates"];
         CLLocationCoordinate2D coordinate;
@@ -113,8 +118,7 @@
 
         [map addAnnotation:mapAnnotation];
         
-        NSLog(@"TWEET %@", [tweet objectForKey:@"text"]);
-        NSLog(@"USER %@", [[tweet objectForKey:@"user"] objectForKey:@"name"]);
+        [mappedData setObject:tweet forKey:[tweetId stringValue]];
     }
 }
 
@@ -167,14 +171,41 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    NSLog(@"SELECTED DATA %@", [(MapAnnotation *)view.annotation data]);
-    [self.delegate mapAnnotationViewSelected:[(MapAnnotation *)view.annotation data]];
+    if( [view isKindOfClass:[MapAnnotationView class]] ) {
+        [self.delegate mapAnnotationViewSelected:[(MapAnnotation *)view.annotation data]];
+    }
+}
+
+- (void) mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view
+{
+    if( [view isKindOfClass:[MapAnnotationView class]] ) {
+        view.selected = NO;
+        
+        [self.delegate mapAnnotationViewDeselected];
+    }
+}
+
+
+- (void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
+    MKAnnotationView *aV;
+    for (aV in views) {
+        
+        CGRect endFrame = aV.frame;
+        
+        aV.frame = CGRectMake(aV.frame.origin.x, aV.frame.origin.y - 230.0, aV.frame.size.width, aV.frame.size.height);
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.45];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [aV setFrame:endFrame];
+        [UIView commitAnimations];
+        
+    }
 }
 
 #pragma mark - CLLocationManager Delegate Methods
 - (void) locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
 {
-    NSLog(@"Location: %@", [newLocation description] );
     [locationManager stopUpdatingLocation];
     
     CLLocationCoordinate2D zoomLocation = newLocation.coordinate;
@@ -201,21 +232,37 @@
                 id twitterData = [[FHSTwitterEngine sharedEngine]searchTweetsWithGeoCode:[self getLocationCoordinates] andQuery:_searchValue count:100 resultType:FHSTwitterEngineResultTypePopular unil:[NSDate distantPast] sinceID:@"1" maxID:nil];
                 
                 if( [twitterData isKindOfClass:[NSError class]]) {
-                    NSLog(@"we have an error likely because there is no query to search");
+                    [self performSelector:@selector(onErrorGettingResults) onThread:[NSThread mainThread] withObject:self waitUntilDone:NO];
                     return;
                 }
                 dispatch_sync(GCDMainThread, ^{
                     @autoreleasepool {
-                        // Update UI
                         if( twitterData && [twitterData objectForKey:@"statuses"] ) {
                             [self populateMap:[twitterData objectForKey:@"statuses"]];
                         }
-                        
                     }
                 });
             }
         });
+    } else {
+//        [self notLoggedInError];
     }
+}
+
+- (void) notLoggedInError
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Authentication Error" message:@"Please login with Twitter to use the app." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    [alert autorelease];
+}
+
+
+
+- (void) onErrorGettingResults
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Search Error" message:@"Please provide a keyword to search Twitter." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    [alert autorelease];
 }
 
 

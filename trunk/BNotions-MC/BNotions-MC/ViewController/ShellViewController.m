@@ -55,11 +55,16 @@
             if (success) {
                 [self performSelector:@selector(onTwitterLoginSuccess) withObject:self.view afterDelay:2.0];
             } else {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"You Must Login with Twitter to use this App." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                [alertView show];
+                 [self performSelector:@selector(onLoginFail) withObject:self.view afterDelay:2.0];
             }
         }];
     }
+}
+
+- (void) onLoginFail
+{
+    UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:@"ERROR" message:@"You Must Login with Twitter to use this App." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease];
+    [alertView show];
 }
 
 - (void) onTwitterLoginSuccess

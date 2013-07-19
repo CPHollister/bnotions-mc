@@ -9,6 +9,8 @@
 #import "MapAnnotationView.h"
 
 #import "Constants.h"
+#import "MapAnnotation.h"
+#import "TweetTimePassed.h"
 
 @implementation MapAnnotationView
 
@@ -17,15 +19,29 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+        isHot = NO;
     }
     return self;
 }
 
 -(void)setAnnotation:(id<MKAnnotation>)annotation
 {
-    [super setAnnotation:annotation];
+    isHot = NO;
 
-    self.image = [UIImage imageNamed:TWEET_PIN];
+    NSString *tweetTime = [[(MapAnnotation *)annotation data] objectForKey:@"created_at"];
+    
+    TweetTimePassed *timePassed = [[TweetTimePassed alloc] initWithTweetTime:tweetTime];
+    
+    if( timePassed.hours == 0 && timePassed.days == 0 && timePassed.years == 0 ) {
+        isHot = YES;
+    }
+
+    self.image = [UIImage imageNamed:isHot ? TWEET_PIN_HOT : TWEET_PIN];
+    
+    [timePassed release];
+    timePassed = nil;
+    
+    [super setAnnotation:annotation];
 }
 
 
@@ -34,11 +50,9 @@
     NSString *imgName;
     
     if( selected ) {
-        
-        NSLog(@"I AM THE CHOSEN ONE");
-        imgName = TWEET_PIN_SELECTED;
+        imgName = isHot ? TWEET_PIN_HOT_SELECTED :TWEET_PIN_SELECTED;
     } else {
-        imgName = TWEET_PIN;
+        imgName = isHot ? TWEET_PIN_HOT : TWEET_PIN;
     }
     
     self.image = [UIImage imageNamed:imgName];

@@ -18,8 +18,12 @@
 
 #pragma mark - Visual Assets
 #define TWEET_PIN @"TweetPin.png"
+#define TWEET_PIN_HOT @"TweetPinHot.png"
+#define TWEET_PIN_HOT_SELECTED @"TweetPinHotSelected.png"
 #define TWEET_PIN_SELECTED @"TweetPinSelected.png"
 #define SEARCH_BAR @"SearchBar.png"
 
 #pragma mark - Fonts
-#define FONT_HELVETICA @"HelveticaNeue"
+#define FONT_HELVETICA_REG @"HelveticaNeue-Regular"
+#define FONT_HELVETICA_BOLD @"HelveticaNeue-Bold"
+#define FONT_HELVETICA_LIGHT @"HelveticaNeue-Light"

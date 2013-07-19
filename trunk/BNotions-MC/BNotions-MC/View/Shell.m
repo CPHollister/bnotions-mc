@@ -14,8 +14,8 @@
 #import "SearchView.h"
 #import "TweetInfoView.h"
 
-#define TWEET_INFO_VIEW_FRAME_OPEN CGRectMake(0,self.frame.size.height, self.frame.size.width, 200);
-#define TWEET_INFO_VIEW_FRAME_CLOSE CGRectMake(0,self.frame.size.height + 205, self.frame.size.width, 200)
+#define TWEET_INFO_VIEW_FRAME_OPEN CGRectMake(0, self.frame.size.height - 90, self.frame.size.width, 90);
+#define TWEET_INFO_VIEW_FRAME_CLOSE CGRectMake(0,self.frame.size.height + 5, self.frame.size.width, 90)
 #define SEARCH_VIEW_FRAME_OPEN CGRectMake((self.frame.size.width - searchView.frame.size.width) / 2, searchView.frame.origin.y, searchView.frame.size.width, searchView.frame.size.height);
 #define SEARCH_VIEW_FRAME_CLOSE CGRectMake(-257, 10, 307, 50)
 
