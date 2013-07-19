@@ -8,20 +8,36 @@
 
 #import "AppDelegate.h"
 
+#import "Shell.h"
+#import "ShellViewController.h"
+
 @implementation AppDelegate
 
 - (void)dealloc
 {
     [_window release];
+    
+    self.rootViewController = nil;
+    
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
+    self.rootViewController = [[ShellViewController alloc] initWithNibName:nil bundle:nil];
+    Shell *v = [[[Shell alloc] initWithFrame:self.window.frame] autorelease];
+    
+    self.rootViewController.view = v;
+    
+    [self.window addSubview:self.rootViewController.view];
+    
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    self.window.rootViewController = self.rootViewController;
+    
     return YES;
 }
 
@@ -45,6 +61,8 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    [[self rootViewController] promptTwitterLogin];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

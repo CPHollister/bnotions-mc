@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class ShellViewController;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (nonatomic, retain) ShellViewController *rootViewController;
+
 
 @end
