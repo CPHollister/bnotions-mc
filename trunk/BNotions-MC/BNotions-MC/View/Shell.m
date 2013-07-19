@@ -14,8 +14,12 @@
 #import "SearchView.h"
 #import "TweetInfoView.h"
 
-#define TWEET_INFO_VIEW_FRAME_OPEN CGRectMake(0, self.frame.size.height - 90, self.frame.size.width, 90);
+#define TWEET_INFO_VIEW_FRAME_OPEN CGRectMake(0, self.frame.size.height - 90, self.frame.size.width, 90)
 #define TWEET_INFO_VIEW_FRAME_CLOSE CGRectMake(0,self.frame.size.height + 5, self.frame.size.width, 90)
+
+#define TWEET_INFO_VIEW_FRAME_IPHONE_OPEN CGRectMake(0, self.frame.size.height - 190, self.frame.size.width, 190)
+#define TWEET_INFO_VIEW_FRAME_IPHONE_CLOSE CGRectMake(0,self.frame.size.height + 5, self.frame.size.width, 190)
+
 #define SEARCH_VIEW_FRAME_OPEN CGRectMake((self.frame.size.width - searchView.frame.size.width) / 2, searchView.frame.origin.y, searchView.frame.size.width, searchView.frame.size.height);
 #define SEARCH_VIEW_FRAME_CLOSE CGRectMake(-257, 10, 307, 50)
 
@@ -107,26 +111,16 @@
 - (void) openTweetInfoView:(NSDictionary *)data
 {
     [tweetInfoView open:data];
-    
-    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        tweetInfoView.frame = TWEET_INFO_VIEW_FRAME_OPEN;
-    } completion:^(BOOL finished){
-
-    }];
 }
 
 
 - (void) closeTweetInfoView:(BOOL)open andData:(NSDictionary *)data
 {
-    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        tweetInfoView.frame = TWEET_INFO_VIEW_FRAME_CLOSE;
-    } completion:^(BOOL finished){
+    if( open && data) {
+        [tweetInfoView close:@"openTweetInfoView:" andTarget:self andData:data];
+    } else {
         [tweetInfoView close];
-        
-        if( open && data ) {
-            [self openTweetInfoView:data];
-        }
-    }];
+    }
 }
 
 

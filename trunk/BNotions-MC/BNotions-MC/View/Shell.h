@@ -32,4 +32,5 @@
 - (void) initShellGestures;
 
 - (void) onTwitterLoginSuccess;
+- (void) openTweetInfoView:(NSDictionary *)data;
 @end

@@ -37,18 +37,66 @@
     self.tweetData = data;
     [self populateLabels];
     [self loadProfileImage];
+    
+    
+    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGPoint p = self.frame.origin;
+        CGSize s = self.frame.size;
+        self.frame = CGRectMake( p.x, self.window.frame.size.height - viewHeight, s.width, viewHeight);
+    } completion:^(BOOL finished){
+        
+    }];
 }
 
 - (void) close
 {
-    self.tweetData = nil;
+    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGPoint p = self.frame.origin;
+        CGSize s = self.frame.size;
+        self.frame = CGRectMake( p.x, self.window.frame.size.height + viewHeight + 5, s.width, viewHeight);
+    } completion:^(BOOL finished){
+        self.tweetData = nil;
+    }];
+}
+
+
+- (void) close:(NSString *)selector andTarget:(id)target andData:(NSDictionary *)data
+{
+    [UIView animateWithDuration:0.2 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        CGPoint p = self.frame.origin;
+        CGSize s = self.frame.size;
+        self.frame = CGRectMake( p.x, self.window.frame.size.height + viewHeight + 5, s.width, viewHeight);
+    } completion:^(BOOL finished){
+
+        self.tweetData = nil;
+        [target performSelector:NSSelectorFromString(selector) withObject:data];
+    }];
 }
 
 - (void) initLabels
 {
+    int profileFontSize;
+    int userNameFontSize;
+    int tweetFontSize;
+    int timeSinceTweeFontSize;
+    
+    if ( UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
+    {
+        profileFontSize = 22;
+        userNameFontSize = 18;
+        tweetFontSize = 24;
+        timeSinceTweeFontSize = 16;
+        //return YES; /* Device is iPad */
+    } else {
+        profileFontSize = 16;
+        userNameFontSize = 12;
+        tweetFontSize = 17;
+        timeSinceTweeFontSize = 10;
+    }
+    
     profileName = [[UILabel alloc] initWithFrame:CGRectMake( 55, 25, 220, 23)];
     profileName.backgroundColor = [UIColor clearColor];
-    profileName.font = [UIFont fontWithName:FONT_HELVETICA_BOLD size:22];
+    profileName.font = [UIFont fontWithName:FONT_HELVETICA_BOLD size:profileFontSize];
     profileName.textColor = [UIColor blackColor];
     profileName.textAlignment = UITextAlignmentLeft;
     profileName.numberOfLines = 1;
@@ -57,7 +105,7 @@
     
     userName = [[UILabel alloc] initWithFrame:CGRectMake(profileName.frame.origin.x + profileName.frame.size.width + 10, profileName.frame.origin.y, 120, 20)];
     userName.backgroundColor = [UIColor clearColor];
-    userName.font = [UIFont fontWithName:FONT_HELVETICA_LIGHT size:18];
+    userName.font = [UIFont fontWithName:FONT_HELVETICA_LIGHT size:userNameFontSize];
     userName.textColor = [UIColor blackColor];
     userName.textAlignment = UITextAlignmentLeft;
     userName.numberOfLines = 1;
@@ -65,19 +113,18 @@
     [self addSubview:userName];
     
     
-    tweet = [[UILabel alloc] initWithFrame:CGRectMake( 45, userName.frame.origin.y + 25, 268, 100)];
+    tweet = [[UILabel alloc] initWithFrame:CGRectMake( 45, userName.frame.origin.y + 25, 100, 12)];
     tweet.backgroundColor = [UIColor clearColor];
-    tweet.font = [UIFont fontWithName:FONT_HELVETICA_REG size:24];
+    tweet.font = [UIFont fontWithName:FONT_HELVETICA_REG size:tweetFontSize];
     tweet.textColor = [UIColor blackColor];
     tweet.textAlignment = UITextAlignmentLeft;
     tweet.lineBreakMode = UILineBreakModeWordWrap;
-    tweet.numberOfLines = 0;
-    
+    tweet.numberOfLines = 0;    
     [self addSubview:tweet];
     
-    timeSinceTweet = [[UILabel alloc] initWithFrame:CGRectMake( self.frame.size.width - 120, tweet.frame.origin.y + tweet.frame.size.height + 4, 268, 19)];
+    timeSinceTweet = [[UILabel alloc] initWithFrame:CGRectMake( self.frame.size.width - 120, 10, 268, 12)];
     timeSinceTweet.backgroundColor = [UIColor clearColor];
-    timeSinceTweet.font = [UIFont fontWithName:FONT_HELVETICA_LIGHT size:16];
+    timeSinceTweet.font = [UIFont fontWithName:FONT_HELVETICA_LIGHT size:timeSinceTweeFontSize];
     timeSinceTweet.textColor = [UIColor blackColor];
     timeSinceTweet.textAlignment = UITextAlignmentLeft;
     timeSinceTweet.numberOfLines = 1;
@@ -108,7 +155,13 @@
 
 - (void) initProfileImage
 {
-    profileImage = [[UIImageView alloc] initWithFrame:CGRectMake( 10, 10, 150, 150)];
+    int padding = 10;
+    if ( UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad )
+    {
+        padding = 5;
+    }
+    
+    profileImage = [[UIImageView alloc] initWithFrame:CGRectMake( padding, padding, 150, 150)];
     profileImage.layer.cornerRadius = 5;
     profileImage.clipsToBounds = YES;
     
@@ -132,6 +185,27 @@
 
 - (void) layoutSubviews
 {
+    int profileNameXPad = 10;
+    int profileNameYPad = -5;
+    
+    int userNameXPad = 5;
+    int userNameYPad = 4;
+    
+    int tweetYPad = 7;
+    
+    int timeYPad = 8;
+    int timeXPad = 10;
+    
+    if ( UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad )
+    {
+        profileNameXPad = 5;
+        userNameYPad = 3;
+        tweetYPad = 3;
+        
+        timeYPad = 3;
+        timeXPad = 5;
+    }
+    
     if( profileImage ) {
         
     }
@@ -139,22 +213,40 @@
     if( profileName ) {
         [profileName sizeToFit];
         
-        profileName.frame = CGRectMake(profileImage.frame.origin.x + profileImage.frame.size.width + 11, profileImage.frame.origin.y- 5, profileName.frame.size.width, profileName.frame.size.height);
+        profileName.frame = CGRectMake(profileImage.frame.origin.x + profileImage.frame.size.width + profileNameXPad, profileImage.frame.origin.y + profileNameYPad, profileName.frame.size.width, profileName.frame.size.height);
     }
     
     if( userName ) {
         [userName sizeToFit];
-        userName.frame = CGRectMake( profileName.frame.origin.x + profileName.frame.size.width + 5, profileName.frame.origin.y + 4, userName.frame.size.width, userName.frame.size.height);
+        userName.frame = CGRectMake( profileName.frame.origin.x + profileName.frame.size.width + userNameXPad, profileName.frame.origin.y + userNameYPad, userName.frame.size.width, userName.frame.size.height);
     }
     
     
     if( tweet ) {
-        tweet.frame = CGRectMake( profileName.frame.origin.x, profileName.frame.size.height + 7, self.frame.size.width - profileName.frame.origin.x - 10, tweet.frame.size.height);
+        [tweet sizeToFit];
+        tweet.frame = CGRectMake( profileName.frame.origin.x, profileName.frame.size.height + tweetYPad, self.frame.size.width - profileName.frame.origin.x - profileNameXPad, tweet.frame.size.height);
     }
     
     if (timeSinceTweet) {
-        timeSinceTweet.frame = CGRectMake( self.frame.size.width - timeSinceTweet.frame.size.width - 10, self.frame.size.height - timeSinceTweet.frame.size.height - 8, timeSinceTweet.frame.size.width, 19);
+        [timeSinceTweet sizeToFit];
+        timeSinceTweet.frame = CGRectMake( self.frame.size.width - timeSinceTweet.frame.size.width - timeXPad, tweet.frame.size.height + tweet.frame.origin.y, timeSinceTweet.frame.size.width, timeSinceTweet.frame.size.height );
     }
+    
+    [self determineHeight];
+}
+
+
+- (void) determineHeight
+{
+    int ypadding = UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad ? 21 : 15;
+    
+    int i = profileImage.frame.size.height + ypadding * 2;
+    int ii = timeSinceTweet.frame.origin.y + timeSinceTweet.frame.size.height + ypadding;
+    
+    
+    viewHeight = MAX( profileImage.frame.size.height + ypadding * 2, timeSinceTweet.frame.origin.y + timeSinceTweet.frame.size.height + ypadding);
+    
+    NSLog(@"to ride you must be this tall %d, %d, %d", viewHeight, i, ii);
 }
 
 

@@ -20,6 +20,8 @@
     UILabel *tweet;
     
     UILabel *timeSinceTweet;
+    
+    int viewHeight;
 }
 
 @property (nonatomic, assign) NSDictionary *tweetData;
@@ -27,5 +29,8 @@
 
 - (void) open:(NSDictionary *)data;
 - (void) close;
+- (void) close:(NSString *)selector andTarget:(id)target andData:(NSDictionary *)data;
+
+- (void) determineHeight;
 
 @end
